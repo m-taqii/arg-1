@@ -12,6 +12,7 @@
   "license": "ISC",
   "packageManager": "pnpm@10.33.0",
   "dependencies": {
+    "get-windows": "^9.3.0",
     "screenshot-desktop": "^1.15.3"
   }
 }
