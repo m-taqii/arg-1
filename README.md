@@ -42,7 +42,7 @@ graph TD
     H --> D
 ```
 
-A Node.js core manages the heavy lifting of agent orchestration, screen processing, and tool execution, while a specialized Python service handles wake-word detection and high-fidelity voice synthesis. Communication occurs over a low-latency local Unix socket.
+A Node.js core manages the heavy lifting of agent orchestration, screen processing, and tool execution, while a specialized Python service handles wake-word detection and high-fidelity voice synthesis. Communication occurs over a low-latency local TCP bridge (localhost:5001).
 
 ---
 
@@ -57,7 +57,7 @@ A Node.js core manages the heavy lifting of agent orchestration, screen processi
 | **Wake Word** | OpenWakeWord | Python |
 | **Voice Synthesis** | edge-tts | Python |
 | **Memory Architecture** | Mem0 + ChromaDB | Python |
-| **IPC Bridge** | Unix Sockets | Multi-runtime |
+| **IPC Bridge** | TCP Sockets (Localhost) | Multi-runtime |
 
 ---
 
