@@ -1,26 +1,17 @@
 import net from 'net'
-import fs from 'fs'
 import { EventEmitter } from 'events'
-
-const SOCKET_PATH = '/tmp/argus.sock'
 
 class ArgusBridge extends EventEmitter {
   constructor() {
     super()
     this.server = null
-    this.client = null       // Active connection from the external process
-    this.buffer = ''         // Accumulates data for partial message handling
+    this.client = null
+    this.buffer = ''
     this.ready = false
   }
 
-  // Initializes the Unix Socket server and handles incoming connections
   start() {
     return new Promise((resolve) => {
-
-      if (fs.existsSync(SOCKET_PATH)) {
-        fs.unlinkSync(SOCKET_PATH)
-      }
-
       this.server = net.createServer((socket) => {
         console.log('[bridge] Python connected')
         this.client = socket
@@ -29,14 +20,15 @@ class ArgusBridge extends EventEmitter {
         socket.on('data', (data) => {
           this.buffer += data.toString()
           const lines = this.buffer.split('\n')
-          
           this.buffer = lines.pop()
 
           for (const line of lines) {
             if (!line.trim()) continue
             try {
               const message = JSON.parse(line)
-              this._route(message)
+              if (message.type) {
+                this.emit(message.type, message)
+              }
             } catch (err) {
               console.error('[bridge] Failed to parse message:', line)
             }
@@ -54,8 +46,9 @@ class ArgusBridge extends EventEmitter {
         })
       })
 
-      this.server.listen(SOCKET_PATH, () => {
-        console.log(`[bridge] Socket ready at ${SOCKET_PATH}`)
+      const PORT = 5001
+      this.server.listen(PORT, '127.0.0.1', () => {
+        console.log(`[bridge] Socket ready at 127.0.0.1:${PORT}`)
         resolve()
       })
 
@@ -65,15 +58,6 @@ class ArgusBridge extends EventEmitter {
     })
   }
 
-
-// Emits internal events based on the message type received from the socket
-  _route(message) {
-    if (message.type) {
-      this.emit(message.type, message)
-    }
-  }
-
-  // send a message to Python
   send(message) {
     if (!this.client || !this.ready) {
       console.warn('[bridge] Cannot send — Python not connected yet')
@@ -86,7 +70,6 @@ class ArgusBridge extends EventEmitter {
     }
   }
 
-  // Gracefully shuts down the server and removes the socket file
   close() {
     return new Promise((resolve) => {
       if (this.client) {
@@ -95,9 +78,6 @@ class ArgusBridge extends EventEmitter {
       }
       if (this.server) {
         this.server.close(() => {
-          if (fs.existsSync(SOCKET_PATH)) {
-            fs.unlinkSync(SOCKET_PATH)
-          }
           console.log('[bridge] Bridge stopped')
           resolve()
         })
