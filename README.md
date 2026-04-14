@@ -74,8 +74,8 @@ Argus is engineered for continuous operation with near-zero overhead:
 
 | Phase | Milestone | Status |
 | :--- | :--- | :--- |
-| **Phase 1** | Foundation: Screen capture, IPC bridge, and voice pipeline. | 🔨 In Progress |
-| **Phase 2** | Intelligence: Vision-driven reasoning with LangGraph. | 📅 Upcoming |
+| **Phase 1** | Foundation: Screen capture, IPC bridge, and voice pipeline. | ✅ Complete |
+| **Phase 2** | Intelligence: Vision-driven reasoning with LangGraph. | 🔨 In Progress |
 | **Phase 3** | Integration: End-to-end proactive interruption cycles. | 📅 Upcoming |
 | **Phase 4** | Capabilities: Core skill set (Web, Terminal, Files). | 📅 Upcoming |
 | **Phase 5** | Persistence: Advanced long-term memory integration. | 📅 Upcoming |
