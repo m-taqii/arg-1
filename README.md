@@ -1,4 +1,4 @@
-# Arg-1 - Argus
+# ◈ Arg-1 (Argus)
 
 > A proactive, context-aware AI companion for your desktop environment.
 
@@ -155,5 +155,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ---
 
 <p align="center">
-  <b>Developed by M.Taqi</b>
+  <b>Built with ❤️ by M.Taqi</b>
 </p>

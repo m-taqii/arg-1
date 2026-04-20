@@ -1,2 +1,4 @@
 allowBuilds:
   get-windows: true
+  sharp: true
+  tesseract.js: true
