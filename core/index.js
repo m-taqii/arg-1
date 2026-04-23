@@ -9,6 +9,7 @@ import { hasScreenChanged } from './screen/diff.js'
 import { getActiveApp } from './screen/appContext.js'
 import { loadPersona, incrementSession } from '../config/persona.js'
 import { runOnboarding } from '../config/onboarding.js'
+import { decide } from './screen/decide.js'
 
 let persona;
 
@@ -23,11 +24,12 @@ function getPythonCmd() {
 
 const state = {
   active: false,
-
+  isWakeWord: false,
+  speechText: "",
   screen: {
     currentApp: null,
     previousApp: null,
-    lastHash: null,
+    lastContext: null,
     idleSeconds: 0,
     lastChangedAt: null,
   },
@@ -43,27 +45,28 @@ let watchInterval = null
 
 async function tick() {
   try {
-    const screenshot = await captureScreen()
-    const changed = hasScreenChanged(screenshot, state.screen.lastHash)
-
-    if (!changed) {
-      // nothing new on screen — track idle time and skip
-      state.screen.idleSeconds += WATCH_INTERVAL_MS / 1000
-      console.log(`[watch] No change — idle for ${state.screen.idleSeconds}s`)
-      return
+    const screenshot = await captureScreen() 
+    const app = await getActiveApp()
+    
+    const currentContext = {
+      screenshot: screenshot.buffer,
+      hash: screenshot.hash,
+      app: app
     }
 
-    // screen changed — reset idle, update hash and timestamp
-    state.screen.lastHash = screenshot.hash
-    state.screen.lastChangedAt = Date.now()
-    state.screen.idleSeconds = 0
+    const previousContext = state.screen.lastContext || null
 
-    const app = await getActiveApp()
-    state.screen.previousApp = state.screen.currentApp
-    state.screen.currentApp = app
+    const diffData = await hasScreenChanged(currentContext, previousContext)
 
-    const appName = typeof app === 'object' ? app.name : app
-    console.log(`[watch] Screen changed — active app: ${appName}`)
+    await decide(diffData, currentContext, state, persona)
+
+    state.screen.lastContext = currentContext
+    if (diffData.isChanged) {
+      state.screen.lastChangedAt = Date.now()
+      state.screen.idleSeconds = 0
+    } else {
+      state.screen.idleSeconds += WATCH_INTERVAL_MS / 1000
+    }
 
   } catch (err) {
     console.error('[watch] Tick error:', err.message)
@@ -92,10 +95,13 @@ export function speak(text) {
 
 // wake handlers 
 function onWake() {
+  state.isWakeWord = true;
+
   if (state.active) {
-    console.log('[argus] Already awake')
+    console.log('[argus] Wake word heard again. Forcing check.')
     return
   }
+  
   state.active = true
   console.log('[argus] Awake')
   const name = persona?.user?.name || 'there'
@@ -149,9 +155,9 @@ process.on('SIGINT', shutdown)
 process.on('SIGTERM', shutdown)
 
 async function boot() {
-  console.log('─────────────────────────────────')
+  console.log('-'.repeat(33))
   console.log(' ◈ Argus — always watching')
-  console.log('─────────────────────────────────')
+  console.log('-'.repeat(33))
 
   persona = loadPersona()
   if (!persona) {
@@ -166,7 +172,8 @@ async function boot() {
 
   spawnPython()
 
-  console.log(`[argus] Ready. Say "Hey Jarvis" to wake me, ${persona.user.name}.`)
+  console.log(`[argus] Ready (Say "Hey Jarvis" to wake me). I am now watching your screen, ${persona.user.name}.`)
+  startWatchLoop()
 }
 
 boot()
