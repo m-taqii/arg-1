@@ -17,7 +17,9 @@ Argus is built on three pillars:
 
 ## Key Features
 
-- **Continuous Vision Analysis**: Monitors screen activity through periodic captures and intelligent change detection.
+- **Intelligence Gatekeeper**: A 5-gate heuristic engine that governs LLM invocations based on motion, context-switching, idle-time, and local OCR.
+- **Local OCR Sentry**: Uses Tesseract.js to scan screen changes for errors and exceptions in real-time without sending data to the cloud.
+- **Continuous Vision Analysis**: Monitors screen activity through periodic captures and intelligent pixel-diffing.
 - **Proactive Interventions**: Voice-based interruptions triggered by task-specific conditions (e.g., debugging assistance, focus reminders).
 - **Adaptive User Profiling**: Dynamically builds and refines a persistent model of your work style, deadlines, and preferences.
 - **Conversational Interface**: Natural voice interaction for follow-up questions and multi-modal task execution.
@@ -51,8 +53,9 @@ A Node.js core manages the heavy lifting of agent orchestration, screen processi
 | Layer | Tool | Environment |
 | :--- | :--- | :--- |
 | **Orchestration** | LangGraph JS | Node.js |
-| **Vision** | Groq / OpenAI Vision | API |
-| **Screen Processing** | screenshot-desktop & Pixel Hashing | Node.js |
+| **Vision/Brain** | Groq / Gemini / OpenAI | API |
+| **Local OCR** | Tesseract.js | Node.js |
+| **Screen Processing** | screenshot-desktop, Sharp & Pixel Hashing | Node.js |
 | **Context Extraction** | get-windows | Node.js |
 | **Wake Word** | OpenWakeWord | Python |
 | **Voice Synthesis** | edge-tts | Python |
@@ -89,7 +92,7 @@ Argus is engineered for continuous operation with near-zero overhead:
 - Node.js 18.0+
 - Python 3.10+
 - `ffmpeg` (required for audio processing)
-- A Groq or OpenAI API Key
+- A Groq, Google, or OpenAI API Key
 
 ### Installation
 
