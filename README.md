@@ -17,11 +17,10 @@ Argus is built on three pillars:
 
 ## Key Features
 
-- **Intelligence Gatekeeper**: A 5-gate heuristic engine that governs LLM invocations based on motion, context-switching, idle-time, and local OCR.
-- **Local OCR Sentry**: Uses Tesseract.js to scan screen changes for errors and exceptions in real-time without sending data to the cloud.
-- **Continuous Vision Analysis**: Monitors screen activity through periodic captures and intelligent pixel-diffing.
-- **Proactive Interventions**: Voice-based interruptions triggered by task-specific conditions (e.g., debugging assistance, focus reminders).
-- **Adaptive User Profiling**: Dynamically builds and refines a persistent model of your work style, deadlines, and preferences.
+- **Sovereign Intelligence Gates**: A 12-gate heuristic engine that governs LLM invocations based on flow states, visual spikes, idle-time, and context-switching.
+- **Flow Protection**: Automatically detects coding/typing flow and suppresses interruptions to keep the user in the zone.
+- **Spike-then-Static Detection**: Identifies new UI elements or popups that appearing on screen and proactively helps if the user doesn't react.
+- **Local OCR Sentry**: Optimized Tesseract.js engine that monitors high-leverage screen areas (like terminals) for errors and exceptions.
 - **Conversational Interface**: Natural voice interaction for follow-up questions and multi-modal task execution.
 - **Integrated Tooling**: Autonomous execution of web searches, terminal commands, file operations, and document generation.
 - **Session Memory**: Persistent context retention across restarts using vector-based memory systems.
@@ -78,8 +77,8 @@ Argus is engineered for continuous operation with near-zero overhead:
 | Phase | Milestone | Status |
 | :--- | :--- | :--- |
 | **Phase 1** | Foundation: Screen capture, IPC bridge, and voice pipeline. | ✅ Complete |
-| **Phase 2** | Intelligence: Vision-driven reasoning with LangGraph. | 🔨 In Progress |
-| **Phase 3** | Integration: End-to-end proactive interruption cycles. | 📅 Upcoming |
+| **Phase 2** | Intelligence: Vision-driven reasoning with LangGraph. | ✅ Complete |
+| **Phase 3** | Integration: End-to-end proactive interruption cycles. | 🔨 In Progress |
 | **Phase 4** | Capabilities: Core skill set (Web, Terminal, Files). | 📅 Upcoming |
 | **Phase 5** | Persistence: Advanced long-term memory integration. | 📅 Upcoming |
 
@@ -98,8 +97,8 @@ Argus is engineered for continuous operation with near-zero overhead:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/m-taqii/arg-1.git
-   cd arg-1
+   git clone https://github.com/m-taqii/argus.git
+   cd argus
    ```
 
 2. **Setup Node.js environment:**
