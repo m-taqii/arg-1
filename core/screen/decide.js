@@ -1,4 +1,4 @@
-import { agent } from "../agent/graph.js";
+import { agent, SESSION_THREAD } from "../agent/graph.js";
 import { speak } from "../index.js";
 import { createWorker } from "tesseract.js";
 
@@ -208,7 +208,7 @@ async function invokeAgent(state, currentContext, diffData, persona, now, opts) 
         diffData,
         triggerReason: reason,
         userMessage,
-    });
+    }, SESSION_THREAD);
 
     if (response.speechText) {
         state.lastSpokeAt = now;

@@ -1,5 +1,7 @@
-import { Annotation, END, START, StateGraph } from "@langchain/langgraph";
+import { Annotation, END, START, StateGraph, MemorySaver } from "@langchain/langgraph";
+import { ToolNode } from "@langchain/langgraph/prebuilt";
 import { modelNode } from "./nodes/modelNode.js";
+import { tools } from "./tools/tools.js";
 
 export const AgentState = Annotation.Root({
   messages: Annotation({
@@ -18,7 +20,7 @@ export const AgentState = Annotation.Root({
   diffData: Annotation({
     reducer: (x, y) => y ?? x,
   }),
-  
+
   triggerReason: Annotation({
     reducer: (x, y) => y ?? x,
   }),
@@ -41,12 +43,31 @@ export const AgentState = Annotation.Root({
   })
 });
 
+// Tool node from centralized registry
+const toolNode = new ToolNode(tools);
+
+// In-Memory Session Checkpointer
+const checkpointer = new MemorySaver();
+
+// Route: if model returned tool calls → tools, otherwise → end
+function shouldContinue(state) {
+  const lastMessage = state.messages[state.messages.length - 1];
+  if (lastMessage?.tool_calls?.length > 0) return "tools";
+  return "end";
+}
+
 const builder = new StateGraph(AgentState)
   .addNode("model", modelNode)
+  .addNode("tools", toolNode)
 
   .addEdge(START, "model")
-  .addConditionalEdges("model", (state) => state.nextAction, {
-    "agent": "model",
+  .addConditionalEdges("model", shouldContinue, {
+    "tools": "tools",
     "end": END
-  });
-export const agent = builder.compile();
+  })
+  .addEdge("tools", "model");
+
+export const agent = builder.compile({ checkpointer });
+
+// Session thread ID — single persistent thread for the entire session
+export const SESSION_THREAD = { configurable: { thread_id: "argus-session" } };

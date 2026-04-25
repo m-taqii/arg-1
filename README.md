@@ -130,14 +130,13 @@ Argus is engineered for continuous operation with near-zero overhead:
 
 | Phase | Milestone | Status |
 |:------|:----------|:-------|
-| **Phase 1** | Foundation: Screen capture, TCP IPC bridge, and voice pipeline. | ✅ Complete |
-| **Phase 2** | Intelligence: Vision-driven reasoning with LangGraph. | ✅ Complete |
-| **Phase 3** | Decision Engine: 12-gate heuristic intelligence. | ✅ Complete |
-| **Phase 4** | Integration: End-to-end proactive interruption cycles. | ✅ Complete |
-| **Phase 5** | Capabilities: Modular tool execution (Skills) system. | ✅ Complete |
-| **Phase 6** | Persistence: Advanced long-term memory integration (Mem0). | 📅 Upcoming |
-| **Phase 7** | Conversation: Wake word → speech-to-text dialogue loop. | 📅 Upcoming |
-| **Phase 8** | Custom Wake Word: Trained "Hey Argus" model. | 📅 Upcoming |
+| **Phase 1** | **Foundation**: Screen capture, TCP IPC bridge, and base voice pipeline. | ✅ Complete |
+| **Phase 2** | **Perception**: 12-Gate Sovereign Engine with local Tesseract OCR. | ✅ Complete |
+| **Phase 3** | **Agency**: LangGraph orchestration and modular Skill/Tool registry. | ✅ Complete |
+| **Phase 4** | **Real Hearing**: Proper Voice Input and Output + Wake Word. | 🔨 In Progress |
+| **Phase 5** | **Conversational Persona**: Autonomous onboarding and personality evolution. | 📅 Upcoming |
+| **Phase 6** | **Episodic Memory**: Long-term context retention using Mem0 and ChromaDB. | 📅 Upcoming |
+| **Phase 7** | **Deep Integration**: Specialized dev-tools (IDE, Terminal, Browser control). | 📅 Upcoming |
 
 ---
 
