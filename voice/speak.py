@@ -14,7 +14,7 @@ async def speak():
 
     communicate = edge_tts.Communicate(text, voice, rate=rate, pitch=pitch)
     await communicate.save(path)
-    subprocess.run(['ffplay', '-nodisp', '-autoexit', path])
+    subprocess.run(['ffplay', '-nodisp', '-autoexit', '-loglevel', 'quiet', path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 if __name__ == "__main__":
     asyncio.run(speak())   
